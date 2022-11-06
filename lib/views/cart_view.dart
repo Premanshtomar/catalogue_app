@@ -43,7 +43,7 @@ class CardTotal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartModel? cart = (VxState.store as MyVxStore).cart;
+    final CartModel cart = (VxState.store as MyVxStore).cart;
     return Container(
       padding: const EdgeInsets.all(20),
       child: SizedBox(
@@ -51,13 +51,15 @@ class CardTotal extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:[
-            Text(cart!.totalPrice.toString(),
-            textScaleFactor: 3,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: MyTheme.darkBlue
-            ),
-            ),
+            VxConsumer(builder: (context, store, status) =>
+              Text(cart.totalPrice.toString(),
+                textScaleFactor: 3,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: MyTheme.darkBlue
+                ),
+              )
+            , mutations: const {RemoveMutation}),
             SizedBox(
               width: MediaQuery.of(context).size.width*0.32,
               height: MediaQuery.of(context).size.height*0.05,
@@ -90,8 +92,9 @@ class CartList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartModel? cart = (VxState.store as MyVxStore).cart;
-    return cart!.items.isEmpty ? const Center(
+    VxState.watch(context, on: [RemoveMutation]);
+    final CartModel cart = (VxState.store as MyVxStore).cart;
+    return cart.items.isEmpty ? const Center(
       child: Text(
         'Nothing to show', style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -110,7 +113,7 @@ class CartList extends StatelessWidget {
                     Icons.remove_circle_outline
                 ),
                 onPressed: () {
-                  cart.remove(cart.items[index]);
+                  RemoveMutation(cart.items[index]);
                 },
 
               ),

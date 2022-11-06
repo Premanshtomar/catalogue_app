@@ -4,17 +4,13 @@ import 'package:velocity_x/velocity_x.dart';
 
 class CartModel {
 
-  late CatalogueModel _catalog;
+  final CatalogueModel catalog;
 
   final List<int> ids = [];
 
-  CatalogueModel get catalog => _catalog;
+  CartModel(this.catalog);
 
-  set catalog(CatalogueModel newCatalog) {
-    _catalog = newCatalog;
-  }
-
-  List<Item> get items => ids.map((id) => _catalog.getById(id)).toList();
+  List get items => ids.map((id) => catalog.getById(id)).toList();
 
   static num total = 0;
 
@@ -23,13 +19,6 @@ class CartModel {
       (items.fold(
           0.0, (previousValue, element) => (previousValue) + element.price));
 
-  void add(Item item) {
-    ids.add(item.id);
-  }
-
-  void remove(Item item) {
-    ids.remove(item.id);
-  }
 }
 
 
@@ -38,7 +27,18 @@ class AddMutation extends VxMutation<MyVxStore>{
   AddMutation(this.item);
   @override
   perform() {
-    store!.cart.ids.add(item.id);
+    store?.cart.ids.add(item.id);
+  }
+
+}
+
+
+class RemoveMutation extends VxMutation<MyVxStore>{
+  Item item;
+  RemoveMutation(this.item);
+  @override
+  perform() {
+    store?.cart.ids.remove(item.id);
   }
 
 }

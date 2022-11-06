@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:catalogue_app/models/cart.dart';
 import 'package:catalogue_app/models/catalogue.dart';
 import 'package:catalogue_app/utils/routes.dart';
 import 'package:catalogue_app/utils/theme.dart';
 import 'package:catalogue_app/views/widgets/catalogue_header.dart';
 import 'package:catalogue_app/views/widgets/catalogue_list.dart';
 import 'package:catalogue_app/views/widgets/drawer_view.dart';
+import 'package:catalogue_app/views/widgets/vx_store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -38,19 +41,27 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final cart = (VxState.store as MyVxStore).cart;
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent,),
-
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       drawer: const MyDrawer(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: MyTheme.darkBlue,
-        onPressed: () {
-          Navigator.pushNamed(context, Routes.cartView);
-        },
-        child: const Icon(
-          CupertinoIcons.cart,
-          color: Colors.yellow,
-        ),
+      floatingActionButton: VxBuilder(
+        builder:(context, store, status) =>  FloatingActionButton(
+          backgroundColor: MyTheme.darkBlue,
+          onPressed: () {
+            Navigator.pushNamed(context, Routes.cartView);
+          },
+          child: const Icon(
+            CupertinoIcons.cart,
+            color: Colors.yellow,
+          ),
+        ).badge(
+          color: Colors.grey,
+          size: 22,
+          count: cart.items.length,
+        ), mutations: const {RemoveMutation,AddMutation},
       ),
       backgroundColor: Theme.of(context).cardColor,
       body: SafeArea(
