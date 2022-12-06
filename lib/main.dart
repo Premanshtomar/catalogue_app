@@ -1,19 +1,28 @@
+import 'package:catalogue_app/pages/authentication/forget_password.dart';
+import 'package:catalogue_app/pages/authentication/login_page.dart';
+import 'package:catalogue_app/pages/authentication/signup_page.dart';
+import 'package:catalogue_app/pages/cart/cart_view.dart';
+import 'package:catalogue_app/pages/home/home.dart';
 import 'package:catalogue_app/utils/routes.dart';
 import 'package:catalogue_app/utils/theme.dart';
-import 'package:catalogue_app/views/cart_view.dart';
-// import 'package:catalogue_app/views/detail_view.dart';
-import 'package:catalogue_app/views/login_view.dart';
-import 'package:catalogue_app/views/home.dart';
-import 'package:catalogue_app/views/widgets/vx_store.dart';
+import 'package:catalogue_app/velocityx/vx_store.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
-// import 'package:flutter/services.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
-
-void main() {
-  runApp(VxState(store: MyVxStore(),
-  child: const MyApp()));
+void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+        // statusBarBrightness: Brightness.dark,
+        // statusBarIconBrightness: Brightness.light,
+        // statusBarColor: Colors.transparent,
+        ),
+  );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(VxState(store: MyVxStore(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -23,36 +32,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/': (context) => const Home(),
-        Routes.loginRoutes: (context) => const LoginView(),
+        Routes.loginRoutes: (context) => const LogInPage(),
         Routes.mainUi: (context) => const Home(),
         Routes.cartView: (context) => const CartView(),
+        Routes.signUp: (context) => const SignUpPage(),
+        Routes.forgetPassword: (context) => const ForgetPassword(),
       },
       theme: MyTheme.lightTheme,
       themeMode: ThemeMode.system,
       // darkTheme: MyTheme.darkTheme,
       // darkTheme: ThemeData(brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
+      home: FirebaseAuth.instance.currentUser != null
+          ? const Home()
+          : const LogInPage(),
     );
   }
 }
-
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Catalogue App'),
-//       ),
-//       body: TextButton(
-//         onPressed: () {},
-//         child: const Text('Nothing'),
-//       ),
-//       drawer: const Drawer(
-//         backgroundColor: Colors.lightBlue,
-//       ),
-//     );
-//   }
-// }

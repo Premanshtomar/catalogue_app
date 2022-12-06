@@ -1,6 +1,6 @@
 import 'package:catalogue_app/models/catalogue.dart';
 import 'package:catalogue_app/utils/theme.dart';
-import 'package:catalogue_app/views/widgets/add_to_cart.dart';
+import 'package:catalogue_app/pages/home/home_utils/add_to_cart.dart';
 import 'package:flutter/material.dart';
 
 class DetailView extends StatelessWidget {

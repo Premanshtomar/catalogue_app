@@ -1,11 +1,11 @@
-import 'package:catalogue_app/views/widgets/vx_store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../models/cart.dart';
-import '../../models/catalogue.dart';
-import '../../utils/theme.dart';
+import '../../../models/cart.dart';
+import '../../../models/catalogue.dart';
+import '../../../utils/theme.dart';
+import '../../../velocityx/vx_store.dart';
 
 class AddToCartWidget extends StatelessWidget {
   final Item catalog;

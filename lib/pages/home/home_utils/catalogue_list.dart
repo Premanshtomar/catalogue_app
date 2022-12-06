@@ -1,8 +1,8 @@
-import 'package:catalogue_app/views/detail_view.dart';
-import 'package:catalogue_app/views/widgets/catalogue_item.dart';
+import 'package:catalogue_app/pages/detail_page/detail_view.dart';
+import 'package:catalogue_app/pages/home/home_utils/catalogue_item.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/catalogue.dart';
+import '../../../models/catalogue.dart';
 
 class CatalogueList extends StatelessWidget {
   const CatalogueList({Key? key}) : super(key: key);

@@ -1,8 +1,9 @@
 import 'package:catalogue_app/models/cart.dart';
 import 'package:catalogue_app/utils/theme.dart';
-import 'package:catalogue_app/views/widgets/vx_store.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import '../../velocityx/vx_store.dart';
 
 
 class CartView extends StatelessWidget {
