@@ -15,9 +15,9 @@ import 'package:velocity_x/velocity_x.dart';
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-        // statusBarBrightness: Brightness.dark,
-        // statusBarIconBrightness: Brightness.light,
-        // statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
         ),
   );
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,10 +32,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        Routes.loginRoutes: (context) => const LogInPage(),
+        Routes.loginRoutes: (context) => LogInPage(),
         Routes.mainUi: (context) => const Home(),
         Routes.cartView: (context) => const CartView(),
-        Routes.signUp: (context) => const SignUpPage(),
+        Routes.signUp: (context) =>  SignUpPage(),
         Routes.forgetPassword: (context) => const ForgetPassword(),
       },
       theme: MyTheme.lightTheme,
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: FirebaseAuth.instance.currentUser != null
           ? const Home()
-          : const LogInPage(),
+          : LogInPage(),
     );
   }
 }

@@ -1,28 +1,27 @@
 // ignore_for_file: use_build_context_synchronously, duplicate_ignore
 import 'package:catalogue_app/pages/authentication/repo/repo.dart';
-import 'package:catalogue_app/values/app_images.dart';
+import 'package:catalogue_app/velocityx/auth_state.dart';
+import 'package:catalogue_app/velocityx/vx_store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../utils/exceptions.dart';
 import '../../utils/alert_dialogs.dart';
 import '../../utils/routes.dart';
 
-class LogInPage extends StatefulWidget {
-  const LogInPage({Key? key}) : super(key: key);
-
-  @override
-  State<LogInPage> createState() => _LogInPageState();
-}
-
-class _LogInPageState extends State<LogInPage> {
-  bool onChanged = false;
+class LogInPage extends StatelessWidget {
+  LogInPage({super.key});
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+
+
+
+    VxState.watch(context, on: [ChangeAuthState,ResetAuthState]);
+    final onChanged = (VxState.store as MyVxStore).authState.onChanged??false;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -126,9 +125,7 @@ class _LogInPageState extends State<LogInPage> {
                         : Colors.grey.shade200,
                     child: InkWell(
                       onTap: () async {
-                        setState(() {
-                          onChanged = true;
-                        });
+                        ChangeAuthState(true);
                         await Future.delayed(const Duration(milliseconds: 500));
                         final email = _email.text.trim();
                         final password = _password.text;
@@ -146,6 +143,7 @@ class _LogInPageState extends State<LogInPage> {
                             showEmailVerificationDialog(context,
                                 'Email verification link is sent to your email address');
                           }
+                          ChangeAuthState(false);
                         } on UserNotFoundAuthException catch (_) {
                           showErrorDialog(context, 'User Not Found.');
                         } on WrongPasswordAuthException catch (_) {
@@ -155,9 +153,7 @@ class _LogInPageState extends State<LogInPage> {
                         } on GenericAuthException catch (_) {
                           showErrorDialog(context, 'Authentication Error.');
                         }
-                        setState(() {
-                          onChanged = false;
-                        });
+                        ChangeAuthState(false);
                       },
                       child: AnimatedContainer(
                         // alignment: Alignment.center,

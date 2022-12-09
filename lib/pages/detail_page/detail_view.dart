@@ -2,6 +2,7 @@ import 'package:catalogue_app/models/catalogue.dart';
 import 'package:catalogue_app/utils/theme.dart';
 import 'package:catalogue_app/pages/home/home_utils/add_to_cart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DetailView extends StatelessWidget {
   final Item catalog;
@@ -30,7 +31,10 @@ class DetailView extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: MyTheme.cremeColor,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        elevation: 0,
       ),
       backgroundColor: MyTheme.cremeColor,
       body: Column(

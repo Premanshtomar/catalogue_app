@@ -1,27 +1,27 @@
 // ignore_for_file: use_build_context_synchronously, duplicate_ignore
 import 'package:catalogue_app/pages/authentication/repo/repo.dart';
+import 'package:catalogue_app/velocityx/auth_state.dart';
+import 'package:catalogue_app/velocityx/vx_store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../utils/exceptions.dart';
 import '../../utils/alert_dialogs.dart';
 import '../../utils/routes.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
 
-  @override
-  State<SignUpPage> createState() => _SignUpPageState();
-}
+class SignUpPage extends StatelessWidget {
 
-class _SignUpPageState extends State<SignUpPage> {
-  bool onChanged = false;
+  SignUpPage({super.key});
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    VxState.watch(context, on: [ChangeAuthState,ResetAuthState]);
+    final onChanged = ((VxState.store as MyVxStore).authState.onChanged) ?? false;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -112,9 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         : Colors.grey.shade200,
                     child: InkWell(
                       onTap: () async {
-                        setState(() {
-                          onChanged = true;
-                        });
+                        ChangeAuthState(true);
                         await Future.delayed(const Duration(milliseconds: 500));
                         final email = _email.text.trim();
                         final password = _password.text;
@@ -128,9 +126,8 @@ class _SignUpPageState extends State<SignUpPage> {
                             await user.sendEmailVerification();
                             showEmailVerificationDialog(context,
                                 'Email verification link is sent to your Email');
-                            setState(() {
-                              onChanged = false;
-                            });
+                            ResetAuthState();
+
                           }
                           // ignore: use_build_context_synchronously
                           // Navigator.of(context).pushNamed('/email_verify/');
@@ -144,9 +141,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           showErrorDialog(
                               context, 'Authentication Error. ${e.toString()}');
                         }
-                        setState(() {
-                          onChanged = false;
-                        });
+                        ChangeAuthState(false);
+
                       },
                       child: AnimatedContainer(
                         // alignment: Alignment.center,

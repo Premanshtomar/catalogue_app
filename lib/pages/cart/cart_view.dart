@@ -53,7 +53,7 @@ class CardTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:[
             VxConsumer(builder: (context, store, status) =>
-              Text(cart.totalPrice.toString(),
+              Text('\$${cart.totalPrice.toString()}',
                 textScaleFactor: 3,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
